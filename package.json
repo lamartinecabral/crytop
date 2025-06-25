@@ -1,0 +1,24 @@
+{
+  "name": "crytop",
+  "version": "0.0.5",
+  "description": "A simple encryption tool powered by Web Crypto API",
+  "repository": "github:lamartinecabral/crytop",
+  "homepage": "https://www.github.com/lamartinecabral/crytop",
+  "main": "index.js",
+  "typings": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "web",
+    "password",
+    "crypto",
+    "aes"
+  ],
+  "author": "lamartinecabral",
+  "license": "MIT"
+}
