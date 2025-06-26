@@ -1,17 +1,32 @@
 {
   "name": "crytop",
-  "version": "0.0.5",
+  "version": "0.1.1",
   "description": "A simple encryption tool powered by Web Crypto API",
-  "repository": "github:lamartinecabral/crytop",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lamartinecabral/crytop.git"
+  },
   "homepage": "https://www.github.com/lamartinecabral/crytop",
-  "main": "index.js",
-  "typings": "index.d.ts",
+  "main": "./dist/crytop.js",
+  "typings": "./dist/crytop.d.ts",
+  "exports": {
+    "require": "./dist/crytop.js",
+    "import": "./dist/crytop.esm.js"
+  },
+  "type": "commonjs",
   "files": [
-    "index.js",
-    "index.d.ts"
+    "dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepack": "npm run version:up && npm start && npm run version:down",
+    "version:up": "node scripts/setversion.js up",
+    "version:down": "node scripts/setversion.js down",
+    "start:main": "tsc -d -m umd --outDir dist && node scripts/fixumd.js dist/crytop.js",
+    "start:module": "tsc -m esnext && mv src/crytop.js dist/crytop.esm.js && cp dist/crytop.d.ts dist/crytop.esm.d.ts",
+    "start": "npm run start:main && npm run start:module"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
   },
   "keywords": [
     "web",

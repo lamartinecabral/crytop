@@ -1,5 +1,5 @@
 # Crytop
-A simple encryption tool powered by Web Crypto API
+A simple encryption tool powered by [Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API)
 
 # Installation
 
@@ -11,7 +11,7 @@ In a browser:
 
 ```html
 <script type="module">
-  import "https://unpkg.com/crytop";
+  import Crytop from "https://unpkg.com/crytop/dist/crytop.esm.js";
 </script>
 ```
 
@@ -24,7 +24,7 @@ $ npm install crytop
 # Usage example
 
 ```js
-import "crytop";
+import Crytop from "crytop";
 
 (async () => {
   const message = "Hello World!";
