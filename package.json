@@ -1,6 +1,6 @@
 {
   "name": "crytop",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A simple encryption tool powered by Web Crypto API",
   "repository": {
     "type": "git",
@@ -13,14 +13,12 @@
     "require": "./dist/crytop.js",
     "import": "./dist/crytop.esm.js"
   },
-  "type": "commonjs",
   "files": [
     "dist"
   ],
   "scripts": {
-    "prepack": "npm run version:up && npm start && npm run version:down",
-    "version:up": "node scripts/setversion.js up",
-    "version:down": "node scripts/setversion.js down",
+    "test": "node scripts/test.js",
+    "prepack": "node scripts/setversion.js up && npm start && node scripts/setversion.js down",
     "start:main": "tsc -d -m umd --outDir dist && node scripts/fixumd.js dist/crytop.js",
     "start:module": "tsc -m esnext && mv src/crytop.js dist/crytop.esm.js && cp dist/crytop.d.ts dist/crytop.esm.d.ts",
     "start": "npm run start:main && npm run start:module"
