@@ -13,31 +13,38 @@ class Crytop {
       return {
         name,
         keyAlgorithm: { name, length },
-        alg: `${algorithm[0]}${length}${mode}`,
-        ext: true,
-        key_ops: ["encrypt", "decrypt"] satisfies KeyUsage[],
       };
     })();
 
-    this.generateKey = (password: string) => {
-      if (typeof password !== "string") {
-        throw new TypeError("password must be a string");
-      }
+    this.generateKey = async (password: string) => {
+      const keyMaterial = await crypto.subtle.importKey(
+        "raw",
+        new TextEncoder().encode(password),
+        { name: "PBKDF2" },
+        false,
+        ["deriveKey"]
+      );
 
-      const { alg, ext, key_ops, keyAlgorithm } = constants;
-
-      return crypto.subtle.importKey(
-        "jwk",
-        { alg, ext, k: btoa(password.padEnd(32, " ")), key_ops, kty: "oct" },
-        keyAlgorithm,
-        ext,
-        key_ops
+      return crypto.subtle.deriveKey(
+        {
+          name: "PBKDF2",
+          salt: new Uint8Array(16),
+          iterations: 1e5,
+          hash: "SHA-256",
+        },
+        keyMaterial,
+        constants.keyAlgorithm,
+        true,
+        ["encrypt", "decrypt"]
       );
     };
 
-    this.encrypt = async (message: string, password: string) => {
+    this.encrypt = async (message: string, password: string | CryptoKey) => {
       const { name } = constants;
-      const passwordKey = await this.generateKey(password);
+      const passwordKey =
+        typeof password === "string"
+          ? await this.generateKey(password)
+          : password;
 
       const messageEncoded = new TextEncoder().encode(message);
 
@@ -52,9 +59,15 @@ class Crytop {
       return btoa(chars.join(""));
     };
 
-    this.decrypt = async (encryptedMessage: string, password: string) => {
+    this.decrypt = async (
+      encryptedMessage: string,
+      password: string | CryptoKey
+    ) => {
       const { name } = constants;
-      const passwordKey = await this.generateKey(password);
+      const passwordKey =
+        typeof password === "string"
+          ? await this.generateKey(password)
+          : password;
 
       const chars = atob(encryptedMessage).split("");
       const bytes = new Uint8Array(chars.map((a) => Number(a.codePointAt(0))));
@@ -79,6 +92,9 @@ export const encrypt: typeof crytop.encrypt = (...args) => {
 export const decrypt: typeof crytop.decrypt = (...args) => {
   return crytop.decrypt(...args);
 };
+export const generateKey: typeof crytop.generateKey = (...args) => {
+  return crytop.generateKey(...args);
+};
 export const version: string = "";
 
-export default { encrypt, decrypt, version };
+export default { encrypt, decrypt, generateKey, version };

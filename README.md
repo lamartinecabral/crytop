@@ -31,7 +31,7 @@ import Crytop from "crytop";
   const password = "1234";
   
   const encrypted = await Crytop.encrypt(message, password);
-  console.log(encrypted); // XzsKe606L8P4a40xE+d/HA==
+  console.log(encrypted); // WYCn8qIJNoNlVU0pV/LuDg==
 
   const decrypted = await Crytop.decrypt(encrypted, password);
   console.log(message === decrypted); // true
